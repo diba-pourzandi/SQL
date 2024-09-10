@@ -1,0 +1,83 @@
+-- What would you want to know about a company before working there? What would be an interesting way to compare certain companies or industries to others? 
+
+
+/**
+
+-- 1. What companies make the most revenue and in which industry are they placed? 
+-- 2. Is there an industry that makes more on average than others?
+
+SELECT company_name, industry, revenue 
+FROM fortune_companies
+ORDER BY revenue DESC;
+
+SELECT industry, ROUND(AVG(revenue),2) AS avg_revenue
+FROM fortune_companies
+GROUP BY industry
+ORDER BY avg_revenue DESC;
+
+-- Conclusion : Walmart might make the most revenue but on average, the technolgical companies make more revenue than any other. 
+
+
+
+-- 3.Is there a connection between how big/small the company is and the tenure average? 
+
+SELECT CASE WHEN employees >= 100000 THEN 'Extremely Large Company'
+WHEN employees >= 50000 THEN 'Large Company'
+WHEN employees >= 2000 THEN 'Medium Company'
+ELSE 'Small Company'
+END AS company_size,
+AVG(avg_employee_tenure) AS aet
+FROM fortune_companies
+GROUP BY company_size;
+
+-- Conclusion: Large and Medium companies retain the most employees throughout the years. However, this data is based on the numbers picked by the analyst as to what constitutes an extremely large, large, medium and small company. To keep in account that more research could be done to find a more global or objective truth. 
+
+
+
+
+
+
+--4. What is the average tenure of all industries put together, to determine what is above and below exceptional tenure. 
+SELECT AVG(avg_employee_tenure)
+FROM fortune_companies;
+
+--Conclusion : above 6 is better than average tenure in an industry
+
+-- 4.Is there an industry that has better tenure than others? 
+SELECT industry, ROUND(AVG(avg_employee_tenure),2) AS average_tenure,
+CASE WHEN AVG(avg_employee_tenure) >= 6 THEN 'Better than Average Tenure'
+ELSE 'Worst than Average Tenure'
+END AS tenure_rating
+FROM fortune_companies
+GROUP BY industry
+ORDER by tenure_rating ASC;
+
+--Conclusion: Financials, Energy and Manufacturing seem to have the best tenure rate. 
+
+
+
+--5.Putting all this information together, what are the companies that make most revenue and have good tenure ? 
+
+--Need to calculate average revenue to know what is above and below average. 
+SELECT AVG(revenue)
+FROM fortune_companies;
+--Conclusion : 259K
+
+--Companies with good tenure and revenue 
+SELECT company_name
+FROM fortune_companies
+WHERE ROUND(revenue) >= 259 AND avg_employee_tenure >= 6;
+
+-- How many companies have above average tenure and revenue? 
+SELECT COUNT(*)
+FROM fortune_companies
+WHERE ROUND(revenue) >= 259 AND avg_employee_tenure >= 6;
+
+SELECT COUNT(*)
+FROM fortune_companies;
+
+--Conclusion: 13 out of 43 companies offer above average revenue and tenure. Can offer table with specific company names if necessary.
+
+**/
+
+-- What are the companies with healthcare benefits, most paid time off days (asc), and more than ten weeks of maternity ? Does that explain certain tenure averages being low ?
