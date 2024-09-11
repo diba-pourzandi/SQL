@@ -1,7 +1,7 @@
 -- What would you want to know about a company before working there? What would be an interesting way to compare certain companies or industries to others? 
 
 
-/**
+
 
 -- 1. What companies make the most revenue and in which industry are they placed? 
 -- 2. Is there an industry that makes more on average than others?
@@ -43,7 +43,7 @@ FROM fortune_companies;
 
 --Conclusion : above 6 is better than average tenure in an industry
 
--- 4.Is there an industry that has better tenure than others? 
+-- Is there an industry that has better tenure than others? 
 SELECT industry, ROUND(AVG(avg_employee_tenure),2) AS average_tenure,
 CASE WHEN AVG(avg_employee_tenure) >= 6 THEN 'Better than Average Tenure'
 ELSE 'Worst than Average Tenure'
@@ -64,7 +64,7 @@ FROM fortune_companies;
 --Conclusion : 259K
 
 --Companies with good tenure and revenue 
-SELECT company_name
+SELECT company_name, industry
 FROM fortune_companies
 WHERE ROUND(revenue) >= 259 AND avg_employee_tenure >= 6;
 
@@ -76,8 +76,38 @@ WHERE ROUND(revenue) >= 259 AND avg_employee_tenure >= 6;
 SELECT COUNT(*)
 FROM fortune_companies;
 
---Conclusion: 13 out of 43 companies offer above average revenue and tenure. Can offer table with specific company names if necessary.
+--tentative with HAVING AND COUNT
+SELECT industry, COUNT(company_name) 
+FROM fortune_companies
+GROUP BY industry
+HAVING AVG(revenue) >= 259 AND AVG(avg_employee_tenure) >=6;
 
-**/
 
--- What are the companies with healthcare benefits, most paid time off days (asc), and more than ten weeks of maternity ? Does that explain certain tenure averages being low ?
+--Conclusion: 13 out of 43 companies offer above average revenue and tenure. Can offer table with specific company names if necessary. Most of them are in Energy and Manufacturing.
+
+
+
+-- What are the companies with healthcare benefits, most paid time off days (asc), and more than twelve weeks of maternity ? Does that explain certain tenure averages being low ?
+
+SELECT *
+FROM fortune_companies
+WHERE healthcare_benefits = 1 AND maternity_leave_weeks >= 12 AND avg_employee_tenure >=6
+ORDER BY paid_time_off_days DESC;
+
+-- Conclusion: Technological (Manufacturing coming up next) companies seems to have the best benefits 
+
+SELECT AVG(maternity_leave_weeks)
+FROM fortune_companies;
+
+SELECT AVG(paid_time_off_days)
+FROM fortune_companies;
+
+
+SELECT industry, ROUND(AVG(maternity_leave_weeks)) AS average_mat_leave, ROUND(AVG(paid_time_off_days)) AS average_time_off
+FROM fortune_companies
+GROUP BY industry 
+HAVING average_mat_leave >=10 AND average_time_off >= 18
+ORDER BY average_time_off DESC;
+
+--Conclusion: Retail, Finance and Energy do not have above average benefits. The best companies to work for when it comes to maternity leave or time off days is Technological and Manufacturing ones once again. 
+
