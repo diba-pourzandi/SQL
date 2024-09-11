@@ -87,7 +87,7 @@ HAVING AVG(revenue) >= 259 AND AVG(avg_employee_tenure) >=6;
 
 
 
--- What are the companies with healthcare benefits, most paid time off days (asc), and more than twelve weeks of maternity ? Does that explain certain tenure averages being low ?
+-- 6. What are the companies with healthcare benefits, most paid time off days (asc), and more than twelve weeks of maternity ? Does that explain certain tenure averages being low ?
 
 SELECT *
 FROM fortune_companies
