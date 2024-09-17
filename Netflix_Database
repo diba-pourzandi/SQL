@@ -1,0 +1,40 @@
+-- Practicing PostgreSQL
+
+SELECT titles.title, people.cast
+FROM "netflix_titles_info" AS titles
+LEFT JOIN "netflix_people" AS people
+ON titles.show_id = people.show_id
+WHERE duration = '1 Season';
+
+-- 1. How many movie titles are there in the database? (movies only, not tv shows)
+SELECT COUNT(*) 
+FROM "netflix_titles_info"
+WHERE type = 'Movie';
+-- 8
+
+-- 2. When was the most recent batch of tv shows and/or movies added to the database?
+SELECT MAX(date(date_added)) 
+FROM "netflix_titles_info";
+-- 25th of October 2021
+
+-- 3. List all the movies and tv shows in alphabetical order.
+SELECT title
+FROM "netflix_titles_info"
+ORDER BY title ASC;
+
+
+-- 4. Who was the Director for the movie The Starling?
+SELECT people.director
+FROM "netflix_titles_info" AS titles
+LEFT JOIN netflix_people AS people
+ON titles.show_id = people.show_id
+WHERE title = 'The Starling';
+-- Theodore Melfi
+
+-- 5. What is the oldest movie in the database and what year was it made?
+SELECT title, release_year 
+FROM "netflix_titles_info"
+WHERE type = 'Movie'
+ORDER BY release_year ASC
+LIMIT 1;
+-- Sankofa, 1993
