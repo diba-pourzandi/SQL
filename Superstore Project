@@ -1,3 +1,5 @@
+-- https://www.db-fiddle.com/f/PvBAaQwEUSWAxZCsg4Vmx/0
+
 -- 1. Can you order the items by price?
 
 SELECT item_name, price
